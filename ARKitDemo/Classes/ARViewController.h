@@ -70,15 +70,11 @@
 //adding coordinates to the underlying data model.
 - (void)addCoordinate:(ARCoordinate *)coordinate;
 - (void)addCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
-
 - (void)addCoordinates:(NSArray *)newCoordinates;
-
 
 //removing coordinates
 - (void)removeCoordinate:(ARCoordinate *)coordinate;
-- (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated;
-
-- (void)removeCoordinates:(NSArray *)coordinates;
+- (void)removeAllCoordinates;
 
 - (id)initWithLocationManager:(CLLocationManager *)manager;
 

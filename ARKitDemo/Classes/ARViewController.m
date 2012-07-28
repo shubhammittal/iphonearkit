@@ -297,23 +297,11 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 }
 
 - (void)removeCoordinate:(ARCoordinate *)coordinate {
-	[self removeCoordinate:coordinate animated:YES];
-}
-
-- (void)removeCoordinate:(ARCoordinate *)coordinate animated:(BOOL)animated {
-	//do some kind of animation?
 	[ar_coordinates removeObject:coordinate];
 }
 
-- (void)removeCoordinates:(NSArray *)coordinates {	
-	for (ARCoordinate *coordinateToRemove in coordinates) {
-		NSUInteger indexToRemove = [ar_coordinates indexOfObject:coordinateToRemove];
-		
-		//TODO: Error checking in here.
-		
-		[ar_coordinates removeObjectAtIndex:indexToRemove];
-		[ar_coordinateViews removeObjectAtIndex:indexToRemove];
-	}
+- (void)removeAllCoordinates {	
+	[ar_coordinates removeAllObjects];
 }
 
 - (void)updateLocations:(NSTimer *)timer {
