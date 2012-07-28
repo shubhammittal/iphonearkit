@@ -329,26 +329,16 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 	for (ARCoordinate *item in ar_coordinates) {
 		
 		UIView *viewToDraw = [ar_coordinateViews objectAtIndex:index];
-		
 		if ([self viewportContainsCoordinate:item]) {
 			
-			CGPoint loc = [self pointInView:ar_overlayView forCoordinate:item];
+			viewToDraw.center = [self pointInView:ar_overlayView forCoordinate:item];
 			
-			CGFloat scaleFactor = 1.0;
-			if (self.scaleViewsBasedOnDistance) {
-				scaleFactor = 1.0 - self.minimumScaleFactor * (item.radialDistance / self.maximumScaleDistance);
-			}
-			
-			float width = viewToDraw.bounds.size.width * scaleFactor;
-			float height = viewToDraw.bounds.size.height * scaleFactor;
-			
-			viewToDraw.frame = CGRectMake(loc.x - width / 2.0, loc.y - height / 2.0, width, height);
-						
 			CATransform3D transform = CATransform3DIdentity;
 			
 			//set the scale if it needs it.
 			if (self.scaleViewsBasedOnDistance) {
 				//scale the perspective transform if we have one.
+				CGFloat scaleFactor = 1.0 - self.minimumScaleFactor * (item.radialDistance / self.maximumScaleDistance);
 				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
 			}
 			
