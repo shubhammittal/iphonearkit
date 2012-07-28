@@ -15,18 +15,16 @@
 @synthesize centerLocation;
 
 - (void)setCenterLocation:(CLLocation *)newLocation {
-	[centerLocation release];
-	centerLocation = [newLocation retain];
+	centerLocation = newLocation;
 	
-	for (ARGeoCoordinate *geoLocation in self.coordinates) {
+    NSArray *coords = [self.coordinates copy];
+    [self removeAllCoordinates];
+	for (ARGeoCoordinate *geoLocation in coords) {
 		if ([geoLocation isKindOfClass:[ARGeoCoordinate class]]) {
 			[geoLocation calibrateUsingOrigin:centerLocation];
-			
-			if (geoLocation.radialDistance > self.maximumScaleDistance) {
-				self.maximumScaleDistance = geoLocation.radialDistance;
-			}
 		}
 	}
+    [self addCoordinates:coords];
 }
 
 @end
