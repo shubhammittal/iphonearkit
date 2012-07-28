@@ -22,10 +22,6 @@
 @synthesize maximumScaleDistance;
 @synthesize minimumScaleFactor, maximumRotationAngle;
 
-@synthesize updateFrequency;
-
-@synthesize debugMode = ar_debugMode;
-
 @synthesize coordinates = ar_coordinates;
 
 @synthesize delegate, locationDelegate, accelerometerDelegate;
@@ -117,6 +113,10 @@
 													repeats:YES] retain];
 }
 
+- (double)updateFrequency {
+    return updateFrequency;
+}
+
 - (void)setDebugMode:(BOOL)flag {
 	if (self.debugMode == flag) return;
 	
@@ -127,6 +127,10 @@
 	
 	if (self.debugMode) [ar_overlayView addSubview:ar_debugView];
 	else [ar_debugView removeFromSuperview];
+}
+
+- (BOOL)debugMode {
+    return ar_debugMode;
 }
 
 - (BOOL)viewportContainsCoordinate:(ARCoordinate *)coordinate {
@@ -162,7 +166,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)startListening {
