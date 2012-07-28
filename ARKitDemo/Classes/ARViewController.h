@@ -32,7 +32,6 @@
 	NSObject<UIAccelerometerDelegate> *__unsafe_unretained accelerometerDelegate;
 	
 	BOOL scaleViewsBasedOnDistance;
-	double maximumScaleDistance;
 	double minimumScaleFactor;
 	
 	//defaults to 20hz;
@@ -59,7 +58,7 @@
 @property BOOL debugMode;
 
 @property BOOL scaleViewsBasedOnDistance;
-@property double maximumScaleDistance;
+@property double minimumDistance, maximumDistance;
 @property double minimumScaleFactor;
 
 @property BOOL rotateViewsBasedOnPerspective;

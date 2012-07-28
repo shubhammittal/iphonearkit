@@ -19,7 +19,7 @@
 @synthesize centerCoordinate;
 
 @synthesize scaleViewsBasedOnDistance, rotateViewsBasedOnPerspective;
-@synthesize maximumScaleDistance;
+@synthesize minimumDistance, maximumDistance;
 @synthesize minimumScaleFactor, maximumRotationAngle;
 
 @synthesize coordinates = ar_coordinates;
@@ -54,8 +54,10 @@
 	self.cameraController.showsCameraControls = NO;
 	self.cameraController.navigationBarHidden = YES;
 #endif
+    
 	self.scaleViewsBasedOnDistance = NO;
-	self.maximumScaleDistance = 0.0;
+	self.maximumDistance = 0.0;
+	self.minimumDistance = MAXFLOAT;
 	self.minimumScaleFactor = 1.0;
 	
 	self.rotateViewsBasedOnPerspective = NO;
@@ -82,7 +84,6 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
 	ar_overlayView = [[UIView alloc] initWithFrame:CGRectZero];
-	
 	
 	if (self.debugMode) {
 		ar_debugView = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -277,8 +278,11 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 	//do some kind of animation?
 	[ar_coordinates addObject:coordinate];
 		
-	if (coordinate.radialDistance > self.maximumScaleDistance) {
-		self.maximumScaleDistance = coordinate.radialDistance;
+	if (coordinate.radialDistance > self.maximumDistance) {
+		self.maximumDistance = coordinate.radialDistance;
+	}
+    else if (coordinate.radialDistance < self.minimumDistance) {
+		self.minimumDistance = coordinate.radialDistance;
 	}
 	
 	//message the delegate.
@@ -323,7 +327,7 @@ NSComparisonResult LocationSortClosestFirst(ARCoordinate *s1, ARCoordinate *s2, 
 			//set the scale if it needs it.
 			if (self.scaleViewsBasedOnDistance) {
 				//scale the perspective transform if we have one.
-				CGFloat scaleFactor = 1.0 - self.minimumScaleFactor * (item.radialDistance / self.maximumScaleDistance);
+				CGFloat scaleFactor = self.minimumScaleFactor * (self.maximumDistance-item.radialDistance) / (self.maximumDistance-self.minimumDistance);
 				transform = CATransform3DScale(transform, scaleFactor, scaleFactor, scaleFactor);
 			}
 			
